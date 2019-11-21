@@ -412,7 +412,7 @@ public class JConsultaCliente extends JDialog {
 			txtTelefonoCelular.setText(cliente.getCelular());
 			txtCorreo.setText(cliente.getEmail());
 			txtFechaInscripcion.setText(cliente.getFechaInscripcion().toGMTString());
-//			txtResponsableAct.setText(Integer.toString(cliente.getEmpleado()));
+			txtResponsableAct.setText(cliente.getEmpleado().getNomEmp());
 			txtFechaAct.setText(cliente.getFechaActualizacion().toGMTString());
 			
 		}
