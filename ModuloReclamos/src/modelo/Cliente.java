@@ -22,7 +22,7 @@ public class Cliente {
 	private boolean activo;
 	
 	public Cliente() {
-		
+		this.empleado = new Usuario();
 	}
 	
 	public Integer getSuministroId() {

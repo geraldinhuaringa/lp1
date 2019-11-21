@@ -22,13 +22,15 @@ public class ClienteImpl implements ClienteInterface {
 		Connection conexion  = null;
 		ResultSet rs = null;
 		PreparedStatement ps= null;
-		String consulta = "select NumSuministro_cli,nombre_cli,"
-				+ "ape_pat_cli,ape_mat_cli,documento_cli,RazonSoc_cli," + 
-				"telefono_cli,celular_cli,email_cli,empleado,"
-				+ "fec_actualizacion,direccion_cli,fec_inscripcion "
-				+ "from cliente where (documento_cli = ?)  or  (lower(nombre_cli) "
-				+ "like ?) or (lower(ape_pat_cli) like ? or "
-				+ "lower(ape_mat_cli) like ?) or (NumSuministro_cli  = ?)"; 
+		String consulta = "select c.NumSuministro_cli,c.nombre_cli, "+
+				"c.ape_pat_cli,c.ape_mat_cli,c.documento_cli,c.RazonSoc_cli, "+
+				"c.telefono_cli,c.celular_cli,c.email_cli, "+
+				"concat( e.nombre_emp, ' ' ,  e.ape_pat_emp , ' ' ,e.ape_mat_emp) as nomCompleto, "+
+				"c.fec_actualizacion,c.direccion_cli,c.fec_inscripcion, e.codigo_emp "+
+				"from cliente c inner join empleado  e on c.empleado = e.codigo_emp   "+
+				"where (c.documento_cli = ?)  or  (lower(c.nombre_cli)  "+
+				"like ?) or (lower(c.ape_pat_cli) like ? or  "+
+				"lower(c.ape_mat_cli) like ?) or (c.NumSuministro_cli  = ?) "; 
 		Cliente cliente = null;
 		try {
 			conexion = MysqlConexion.getConexion();
@@ -54,6 +56,7 @@ public class ClienteImpl implements ClienteInterface {
 				cliente.setFechaActualizacion(rs.getDate(11));
 				cliente.setDireccion(rs.getString(12));
 				cliente.setFechaInscripcion(rs.getDate(13));
+				cliente.getEmpleado().setCodigo_emp(rs.getInt(14));
 				clientes.add(cliente);
 			}
 		}catch (Exception e) {
@@ -94,7 +97,7 @@ public class ClienteImpl implements ClienteInterface {
 				"c.ape_pat_cli, c.ape_mat_cli,c.documento_cli, c.RazonSoc_cli, "+ 
 				"c.telefono_cli,c.celular_cli,c.email_cli, "+
 				"concat( e.nombre_emp, ' ' ,  e.ape_pat_emp , ' ' ,e.ape_mat_emp) as nomCompleto, "+
-				"c.fec_actualizacion,c.direccion_cli,c.fec_inscripcion "+
+				"c.fec_actualizacion,c.direccion_cli,c.fec_inscripcion, e.codigo_emp  "+
 				"from cliente c inner join empleado  e on c.empleado = e.codigo_emp "+
 				"where trim(c.documento_cli)  = trim(?)"; 
 		Cliente cliente = null;
@@ -118,7 +121,7 @@ public class ClienteImpl implements ClienteInterface {
 				cliente.setFechaActualizacion(rs.getDate(11));
 				cliente.setDireccion(rs.getString(12));
 				cliente.setFechaInscripcion(rs.getDate(13));
-				
+				cliente.getEmpleado().setCodigo_emp(rs.getInt(14));
 			}
 		}catch (Exception e) {
 			e.printStackTrace();

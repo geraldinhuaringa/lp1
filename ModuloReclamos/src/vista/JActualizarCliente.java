@@ -407,7 +407,7 @@ ClienteInterface clienteInterface = new ClienteImpl();
 			txtTelefCel.setText(cli.getCelular());
 			txtCorreo.setText(cli.getEmail());
 			txtFechaInscrip.setText(cli.getFechaInscripcion().toGMTString());
-//			txtRespAct.setText(Integer.toString(cli.getEmpleado()));
+			txtRespAct.setText(cli.getEmpleado().getNomEmp());
 			txtFechaAct.setText(cli.getFechaActualizacion().toGMTString());
 			
 		}}
