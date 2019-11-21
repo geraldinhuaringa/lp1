@@ -14,7 +14,7 @@ public class Cliente {
 	private String telefono;  
 	private String celular;  
 	private String email;  
-	private Usuario empleado;  
+	private Empleado empleado;  
 	private Date fechaActualizacion;  
 	private String direccion; 
 	private Date fechaInscripcion;
@@ -22,7 +22,7 @@ public class Cliente {
 	private boolean activo;
 	
 	public Cliente() {
-		this.empleado = new Usuario();
+		this.empleado = new Empleado();
 	}
 	
 	public Integer getSuministroId() {
@@ -84,11 +84,11 @@ public class Cliente {
 		this.email = email;
 	}
 	
-	public Usuario getEmpleado() {
+	public Empleado getEmpleado() {
 		return empleado;
 	}
 
-	public void setEmpleado(Usuario empleado) {
+	public void setEmpleado(Empleado empleado) {
 		this.empleado = empleado;
 	}
 

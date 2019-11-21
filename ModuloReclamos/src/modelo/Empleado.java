@@ -2,7 +2,7 @@ package modelo;
 
 import java.util.Date;
 
-public class Usuario {
+public class Empleado {
 	
 	private  int codigo_emp  ;
 	private String nomEmp ; 

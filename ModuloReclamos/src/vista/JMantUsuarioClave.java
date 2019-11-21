@@ -2,41 +2,34 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JDesktopPane;
-import java.awt.Color;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import com.toedter.calendar.JDateChooser;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
-import interfaces.UsuarioInterface;
 import interfaces.PerfilInterface;
 import interfaces.SucursalInterface;
+import interfaces.UsuarioInterface;
 import mantenimiento.PerfilImpl;
 import mantenimiento.SucursalImpl;
 import mantenimiento.UsuarioImpl;
-import modelo.Cliente;
-import modelo.Usuario;
+import modelo.Empleado;
 import modelo.Perfil;
 import modelo.Sucursal;
-
-import javax.swing.UIManager;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JButton;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
 
 
 public class JMantUsuarioClave extends JFrame implements ActionListener {
@@ -325,9 +318,9 @@ public class JMantUsuarioClave extends JFrame implements ActionListener {
 		String nombres = txtNombre_1.getText();
 		if(nombres.isEmpty()) nombres =null;
 		
-		ArrayList<Usuario> usuarios = new ArrayList<Usuario>(); //= UsuarioInterface.obtenerUsuario(nombres);
+		ArrayList<Empleado> usuarios = new ArrayList<Empleado>(); //= UsuarioInterface.obtenerUsuario(nombres);
 		if(usuarios.size()>0) {
-			for(Usuario u : usuarios) {
+			for(Empleado u : usuarios) {
 				Object[]fila= {u.getNomEmp()+" "+u.getNomEmp()+" "+u.getApePatemp()+" "+u.getApeMatEmp()};
 				modelo.addRow(fila);
 		}

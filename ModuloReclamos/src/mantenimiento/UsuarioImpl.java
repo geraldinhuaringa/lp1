@@ -8,14 +8,14 @@ import java.util.ArrayList;
 
 import interfaces.UsuarioInterface;
 import modelo.Cliente;
-import modelo.Usuario;
+import modelo.Empleado;
 import utilitario.MysqlConexion;
 
 
 public class UsuarioImpl implements UsuarioInterface {
 
 	@Override
-	public ArrayList<Usuario> obtenerUsuario(String nombre) {
+	public ArrayList<Empleado> obtenerUsuario(String nombre) {
 		// TODO Auto-generated method stub
 		
 		
@@ -29,20 +29,20 @@ public class UsuarioImpl implements UsuarioInterface {
 	}
 
 	@Override
-	public Usuario obtenerUsurio(int codigo_emp) {
+	public Empleado obtenerUsurio(int codigo_emp) {
 		// TODO Auto-generated method stub
 		Connection conexion  = null;
 		ResultSet rs = null;
 		PreparedStatement ps= null;
 		String consulta = ""; 
-		Usuario usuario = null;
+		Empleado usuario = null;
 		try {
 			conexion = MysqlConexion.getConexion();
 			ps = conexion.prepareStatement(consulta);
 			ps.setInt(1, codigo_emp);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				usuario = new Usuario();
+				usuario = new Empleado();
 				usuario.setCodigo_emp(rs.getInt(1));
 				usuario.setApeMatEmp(rs.getString(2));
 				usuario.setApePatemp(rs.getString(3));
@@ -84,7 +84,7 @@ public class UsuarioImpl implements UsuarioInterface {
 	
 
 	@Override
-	public int modificarUsuario(Usuario us) {
+	public int modificarUsuario(Empleado us) {
 		// TODO Auto-generated method stub
 		String sentencia =" ";
 		
@@ -119,7 +119,7 @@ public class UsuarioImpl implements UsuarioInterface {
 	}
 
 	@Override
-	public int registrarUsuario(Usuario u) {
+	public int registrarUsuario(Empleado u) {
 		// TODO Auto-generated method 
 		int resultado = 0; 
 		Connection cn = null;

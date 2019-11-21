@@ -161,7 +161,8 @@ public class ClienteImpl implements ClienteInterface {
 				"        ape_mat_cli = ?," + 
 				"        direccion_cli = ?," + 
 				"        telefono_cli = ?," + 
-				"        celular_cli= ?,email_cli = ?" + 
+				"        celular_cli= ?,email_cli = ?," +
+				" 		fec_actualizacion = sysdate()"+
 				"        where trim(documento_cli) = trim(?)";
 		
 		PreparedStatement ps= null;

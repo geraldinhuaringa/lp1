@@ -89,7 +89,9 @@ public class UbigeoImpl implements UbigeoInterface {
 		ArrayList<Distrito> lista  =new ArrayList<Distrito>();
 		Distrito distrito= null;
 		Connection cn = null;
-		String consulta = "SELECT codigo_dis, descripcion_dis FROM DISTRITO WHERE provincia = ?";
+		String consulta = "select d.codigo_dis, d.descripcion_dis, e.codigo_est, "
+				+ "e.descripcion_est from distrito d inner join estado e on d.estado "
+				+ "= e.codigo_est where provincia = ?";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
@@ -102,6 +104,8 @@ public class UbigeoImpl implements UbigeoInterface {
 				distrito = new Distrito();
 				distrito.setCodigo(rs.getInt(1));
 				distrito.setDescripcion(rs.getString(2));
+				distrito.getEstado().setCodigo(rs.getInt(3));
+				distrito.getEstado().setDescripcion(rs.getString(4));
 				lista.add(distrito);
 			}
 		} catch (Exception e) {

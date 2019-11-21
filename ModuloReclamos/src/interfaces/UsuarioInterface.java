@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 
 import modelo.Cliente;
-import modelo.Usuario;
+import modelo.Empleado;
 
 public interface UsuarioInterface {
 	 
-	ArrayList<Usuario> obtenerUsuario(String nombre);
-	Usuario obtenerUsurio(int codigo_emp);
-	int modificarUsuario(Usuario us);
-	 int registrarUsuario(Usuario u);
+	ArrayList<Empleado> obtenerUsuario(String nombre);
+	Empleado obtenerUsurio(int codigo_emp);
+	int modificarUsuario(Empleado us);
+	 int registrarUsuario(Empleado u);
 	
 }

@@ -371,8 +371,8 @@ ClienteInterface clienteInterface = new ClienteImpl();
 		int cantidadFila = modelo.getRowCount();
 		if(cantidadFila >0) {
 			modelo.setRowCount(0);
-	}
-		
+		}
+		deshabilitarEdicion();
 		txtSuministro.setText("");
 		txtNombres.setText("");
 		txtApellidos.setText("");
@@ -389,7 +389,6 @@ ClienteInterface clienteInterface = new ClienteImpl();
 		txtFechaInscrip.setText("");
 		txtRespAct.setText("");
 		txtFechaAct.setText("");
-		
 }
 	
 	public void mostrarCliente(String documento) {
