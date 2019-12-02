@@ -39,6 +39,8 @@ import modelo.Provincia;
 public class JMantDisProDep extends JFrame implements ActionListener {
 	 UbigeoInterface ubigeoInterface = new UbigeoImpl();
 	 EstadoInterface estadoInterface = new EstadoImpl();
+	private int columnaSeleccionado;
+	private int registroSeleccionado;
 	private int distritoSeleccionado;
 	private JPanel contentPane;
 	private JLabel lblApellidoPaterno;
@@ -124,6 +126,8 @@ public class JMantDisProDep extends JFrame implements ActionListener {
 		tblSalida = new JTable();
 		tblSalida.setFillsViewportHeight(true);
 		scrollPane.setViewportView(tblSalida);
+		//Permitir reordenamiento de la cabecera  ( false = no , true = si)
+		tblSalida.getTableHeader().setReorderingAllowed(false);
 		
 		modelo = new DefaultTableModel(); 
 		modelo.addColumn("Departamento"); 
@@ -149,10 +153,20 @@ public class JMantDisProDep extends JFrame implements ActionListener {
 		});
 		
 		btnBuscar = new JButton("BUSCAR");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cargarDistrito(provincias.get(cboProvincia.getSelectedIndex()));
+			}
+		});
 		btnBuscar.setBounds(434, 24, 110, 23);
 		Consulta.add(btnBuscar);
 		
 		btnLimpiar = new JButton("LIMPIAR");
+		btnLimpiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				limpiar();
+			}
+		});
 		btnLimpiar.setBounds(434, 58, 110, 23);
 		Consulta.add(btnLimpiar);
 		
@@ -166,15 +180,21 @@ public class JMantDisProDep extends JFrame implements ActionListener {
 		Consulta.add(lblDetalleDelReclamo);
 		
 		btnAnalizarReclamo = new JButton("REGISTRAR");
+		btnAnalizarReclamo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				grabarUbigeo();
+			}
+		});
 		btnAnalizarReclamo.setBounds(186, 479, 110, 23);
 		Consulta.add(btnAnalizarReclamo);
 		
 		cboDepartamento = new JComboBox();
-		cboDepartamento.setBounds(80, 11, 289, 22);
+		cboDepartamento.setBounds(80, 11, 213, 22);
 		cboDepartamento.addItemListener(new ItemListener(){
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
+				System.out.println("carga");
 				// TODO Auto-generated method stub
 				cargarProvincia(departamentos.get(cboDepartamento.getSelectedIndex()));
 			}
@@ -187,11 +207,13 @@ public class JMantDisProDep extends JFrame implements ActionListener {
 			
 			@Override
 			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED) {
 				cargarDistrito(provincias.get(cboProvincia.getSelectedIndex()));
+				}
 				
 			}
 		});
-		cboProvincia.setBounds(80, 41, 289, 22);
+		cboProvincia.setBounds(80, 41, 213, 22);
 		Consulta.add(cboProvincia);
 		
 		lblDepartamento = new JLabel("Departamento");
@@ -261,12 +283,54 @@ public class JMantDisProDep extends JFrame implements ActionListener {
 		txtFecActualizacion.setColumns(10);
 		
 		cboDistrito = new JComboBox();
-		cboDistrito.setBounds(80, 70, 289, 22);
+		cboDistrito.setBounds(80, 70, 213, 22);
 		Consulta.add(cboDistrito);
 		
 		JLabel lblNewLabel = new JLabel("Distrito");
 		lblNewLabel.setBounds(20, 71, 46, 14);
 		Consulta.add(lblNewLabel);
+		
+		JButton btnCrearDepartamento = new JButton("Crear");
+		btnCrearDepartamento.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				registroSeleccionado = 0;
+				limpiar();
+				deshabilitar();
+				txtDepartamento.setEditable(true);
+				cboEstado.setEditable(true);
+			}
+		});
+		btnCrearDepartamento.setBounds(303, 10, 95, 23);
+		Consulta.add(btnCrearDepartamento);
+		
+		JButton btnCrearProvincia = new JButton("Crear");
+		btnCrearProvincia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				registroSeleccionado =  1;
+				limpiar();
+				deshabilitar();
+				txtDepartamento.setText(cboDepartamento.getSelectedItem().toString());
+				txtProvincia.setEditable(true);
+				cboEstado.setEditable(true);
+			}
+		});
+		btnCrearProvincia.setBounds(303, 40, 95, 23);
+		Consulta.add(btnCrearProvincia);
+		
+		JButton btnCrearDistrito = new JButton("Crear");
+		btnCrearDistrito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				registroSeleccionado = 2;
+				limpiar();
+				deshabilitar();
+				txtDepartamento.setText(cboDepartamento.getSelectedItem().toString());
+				txtProvincia.setText(cboProvincia.getSelectedItem().toString());
+				txtDistrito.setEditable(true);
+				cboEstado.setEditable(true);
+			}
+		});
+		btnCrearDistrito.setBounds(303, 69, 95, 23);
+		Consulta.add(btnCrearDistrito);
 		cargarDepartamento();
 		//cargarProvincia();
 		
@@ -292,6 +356,7 @@ public class JMantDisProDep extends JFrame implements ActionListener {
 	}
 	public void cargarProvincia(Departamento dep){
 		try {
+			cboProvincia.removeAllItems();
 			provincias = ubigeoInterface.listaProvincia(dep.getCodigo());/*cboDepartamento.getSelectedIndex()+1*/
 			for(Provincia pro: provincias) {
 				cboProvincia.addItem(pro.getDescripcion());
@@ -332,7 +397,18 @@ public class JMantDisProDep extends JFrame implements ActionListener {
 		if(cantidadFila >0) {
 			modelo.setRowCount(0);
 		}
+		txtDepartamento.setText("");
+		txtProvincia.setText("");
+		txtDistrito.setText("");
+		deshabilitar();
 	}
+	void deshabilitar() {
+		txtDepartamento.setEditable(false);
+		txtProvincia.setEditable(false);
+		txtDistrito.setEditable(false);
+		cboEstado.setEditable(false);
+	} 
+
 	private void seleccionarDistrito(Vector fila) {
 		txtDepartamento.setText(fila.get(0).toString());
 		txtProvincia.setText(fila.get(1).toString());
@@ -346,5 +422,23 @@ public class JMantDisProDep extends JFrame implements ActionListener {
 //		cboEstado.setSelectedIndex(codigo-1);
 		// TODO Auto-generated method stub
 		
+	}
+	void grabarUbigeo() {
+		try {
+			if(registroSeleccionado == 0) { 
+				ubigeoInterface.crearDepartamento(txtDepartamento.getText());
+				
+			}else if(registroSeleccionado == 1) {
+				int codigoDepar = departamentos.get(cboDepartamento.getSelectedIndex()).getCodigo();
+				ubigeoInterface.crearProvincia(codigoDepar, txtProvincia.getText());
+			}else if(registroSeleccionado == 2) {
+				int codigoDepar = departamentos.get(cboDepartamento.getSelectedIndex()).getCodigo();
+				int codigoProv = provincias.get(cboProvincia.getSelectedIndex()).getCodigo();
+				ubigeoInterface.crearDistrito(codigoDepar, codigoProv,txtDistrito.getText(), 1);
+			}
+			limpiar();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

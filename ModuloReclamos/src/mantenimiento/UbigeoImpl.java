@@ -118,4 +118,75 @@ public class UbigeoImpl implements UbigeoInterface {
 		return lista;
 	}
 
+	@Override
+	public int crearDepartamento(String nombre) throws SQLException {
+		int resultado = 0;
+		Connection cn = null;
+		PreparedStatement ps = null;
+		String sentencia = "insert into departamento(descripcion_dep,codigo_dep) select ?, max(codigo_dep) + 1 from departamento";
+		try {
+			cn = MysqlConexion.getConexion();
+			ps = cn.prepareStatement(sentencia);
+			ps.setString(1, nombre);
+			resultado = ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			if(ps!=null) {ps.close();}
+			if(cn!= null) {cn.close();}
+		}
+		// TODO Auto-generated method stub
+		return resultado;
+	}
+
+	@Override
+	public int crearProvincia(int codigoDepartamento,String nombre) throws SQLException {
+		int resultado = 0;
+		Connection cn = null;
+		PreparedStatement ps = null;
+		String sentencia = "insert into provincia(departamento, decripcion_pro,codigo_pro) select ?,?,max(codigo_pro)+1 from provincia";
+		try {
+			cn = MysqlConexion.getConexion();
+			ps = cn.prepareStatement(sentencia);
+			ps.setInt(1, codigoDepartamento);
+			ps.setString(2, nombre);
+			resultado = ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			if(ps!=null) {ps.close();}
+			if(cn!= null) {cn.close();}
+		}
+		// TODO Auto-generated method stub
+		return resultado;
+	}
+
+	@Override
+	public int crearDistrito(int codigoDepartamento, int codigoProvincia,String nombre, int estado) throws SQLException {
+		int resultado = 0;
+		Connection cn = null;
+		PreparedStatement ps = null;
+		String sentencia = "insert into distrito(departamento,provincia, descripcion_dis, estado,codigo_dis,empleado,fec_actualizacion) "
+				+ " select  ?,?,?,?, max(codigo_dis) +1 , 11682, sysdate() from distrito";
+		try {
+			cn = MysqlConexion.getConexion();
+			ps = cn.prepareStatement(sentencia);
+			ps.setInt(1, codigoDepartamento);
+			ps.setInt(2, codigoProvincia);
+			ps.setString(3, nombre);
+			ps.setInt(4, estado);
+			resultado = ps.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}finally {
+			if(ps!=null) {ps.close();}
+			if(cn!= null) {cn.close();}
+		}
+		// TODO Auto-generated method stub
+		return resultado;
+	}
+
 }

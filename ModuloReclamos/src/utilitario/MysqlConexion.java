@@ -9,7 +9,7 @@ public class MysqlConexion {
 		Connection con =  null; 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/forsedapal";
+			String url = "jdbc:mysql://localhost:3306/forsedapal?useSSL=false";
 			String usuario = "root";
 			String clave = "root";
 			
